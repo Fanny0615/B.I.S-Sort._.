@@ -5,8 +5,9 @@ let listaEntrada;
 let retroalimentacion;
 let resultadoDiv;
 let pasosDiv;
+let intervaloPasos = null;
 
-// Inicializar referencias al DOM cuando esté listo
+// Inicializar referencias al DOM
 document.addEventListener('DOMContentLoaded', () => {
     listaEntrada = document.getElementById('lista-entrada');
     retroalimentacion = document.getElementById('retroalimentacion-entrada');
@@ -15,16 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarSeccion('menu-principal');
 });
 
-
-// Función central para cambiar de "página" (sección)
+// Función para cambiar de sección
 function mostrarSeccion(idSeccion) {
-    // Oculta todas las secciones
-    document.getElementById('menu-principal').classList.add('hidden');
-    document.getElementById('seleccion-tipo-dato').classList.add('hidden');
-    document.getElementById('interfaz-ordenamiento').classList.add('hidden');
-    document.getElementById('acerca-de').classList.add('hidden');
-    
-    // Muestra solo la sección deseada
+    document.querySelectorAll('main > section').forEach(seccion => {
+        seccion.classList.add('hidden');
+    });
     document.getElementById(idSeccion).classList.remove('hidden');
 }
 
@@ -40,124 +36,59 @@ function seleccionarTipoDato(tipo) {
     tipoDatoActual = tipo;
     document.getElementById('nombre-alg-interfaz').textContent = algoritmoActual.charAt(0).toUpperCase() + algoritmoActual.slice(1);
     document.getElementById('nombre-tipo').textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-    
-    // Limpieza de interfaz al cambiar de tipo
-    listaEntrada.value = ''; 
+
+    listaEntrada.value = '';
     retroalimentacion.textContent = '';
     resultadoDiv.textContent = 'Esperando entrada...';
     pasosDiv.textContent = 'Esperando pasos...';
-    
+
     mostrarSeccion('interfaz-ordenamiento');
 }
 
-// --- FUNCIONES DE RESTRICCIÓN DE ENTRADA ---
-
+// Restringe la entrada según el tipo de dato
 function restringirEntrada(evento) {
-    if (tipoDatoActual === '') return;
+    if (!tipoDatoActual) return;
 
     const textarea = evento.target;
     let valor = textarea.value;
     let nuevoValor = '';
-    let caracterInvalidoEncontrado = false;
-
-    const patronNumerico = /[0-9,\s-]/; 
-    const patronAlfabetico = /[a-zA-ZáéíóúÁÉÍÓÚñÑ,\s]/; 
+    const patronNumerico = /[0-9,\s-]/;
+    const patronAlfabetico = /[a-zA-ZáéíóúÁÉÍÓÚñÑ,\s]/;
 
     for (let i = 0; i < valor.length; i++) {
         const caracter = valor[i];
-        let esValido = false;
-        
-        if (tipoDatoActual === 'numerico') {
-            esValido = patronNumerico.test(caracter);
-        } else if (tipoDatoActual === 'alfabetico') {
-            esValido = patronAlfabetico.test(caracter);
-        }
+        let esValido = tipoDatoActual === 'numerico' ?
+            patronNumerico.test(caracter) :
+            patronAlfabetico.test(caracter);
 
         if (esValido) {
             nuevoValor += caracter;
-        } else {
-            caracterInvalidoEncontrado = true;
         }
     }
-
 
     textarea.value = nuevoValor;
 }
 
+// Maneja las teclas presionadas
 function manejarTecla(evento) {
-    if (tipoDatoActual === '') return;
+    if (!tipoDatoActual) return;
 
     const tecla = evento.key;
-    const esTeclaControl = tecla === 'Backspace' || tecla === 'Delete' || tecla === 'ArrowLeft' || tecla === 'ArrowRight' || evento.ctrlKey || evento.metaKey;
+    const esTeclaControl = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(tecla) || evento.ctrlKey || evento.metaKey;
 
-    if (esTeclaControl) return;
-
-    if (tecla === ',' || tecla === ' ') return;
+    if (esTeclaControl || tecla === ',' || tecla === ' ') return;
 
     let esValido = false;
-
     if (tipoDatoActual === 'numerico') {
-        if (/[0-9-]/.test(tecla)) {
-            esValido = true;
-        }
+        esValido = /[0-9-]/.test(tecla);
     } else if (tipoDatoActual === 'alfabetico') {
-        if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(tecla)) {
-            esValido = true;
-        }
+        esValido = /[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(tecla);
     }
 
     if (!esValido) {
-        evento.preventDefault(); 
+        evento.preventDefault();
     }
 }
-
-
-// --- LÓGICA DE ORDENAMIENTO DE ALGORITMOS PUROS ---
-
-function ordenarLista(orden) {
-    const entrada = listaEntrada.value.trim();
-    let elementos = entrada.split(',').map(item => item.trim()).filter(item => item.length > 0);
-    let resultadoFinal = [];
-    let pasos = [];
-    
-    if (elementos.length === 0) {
-        resultadoDiv.textContent = 'Error: Por favor, ingresa elementos.';
-        return;
-    }
-
-    let arr = [];
-    
-    // Parsing y Validación final
-    if (tipoDatoActual === 'numerico') {
-        const numeros = elementos.map(Number);
-        if (numeros.some(n => isNaN(n))) {
-            resultadoDiv.textContent = 'Error: ¡Asegúrate de ingresar solo números válidos!';
-            return;
-        }
-        arr = numeros;
-    } else if (tipoDatoActual === 'alfabetico') {
-        arr = elementos;
-    }
-
-    // Aplicación del Algoritmo
-    switch (algoritmoActual) {
-        case 'seleccion':
-            ({ resultado: resultadoFinal, pasos } = ordenamientoSeleccion(arr, orden));
-            break;
-        case 'burbuja':
-            ({ resultado: resultadoFinal, pasos } = ordenamientoBurbuja(arr, orden));
-            break;
-        case 'insercion':
-            ({ resultado: resultadoFinal, pasos } = ordenamientoInsercion(arr, orden));
-            break;
-    }
-    
-    // Mostrar Resultado
-    const textoResultado = resultadoFinal.join(', ');
-    resultadoDiv.textContent = textoResultado;
-    renderizarPasosAnimados(pasos);
-}
-
 
 // Función de comparación genérica
 function comparar(a, b, orden) {
@@ -169,8 +100,7 @@ function comparar(a, b, orden) {
     return orden === 'ascendente' ? a > b : a < b;
 }
 
-// --- RENDERIZACIÓN ANIMADA DE PASOS ---
-let intervaloPasos = null;
+// Renderiza los pasos del algoritmo de forma animada
 function renderizarPasosAnimados(pasos) {
     if (intervaloPasos) {
         clearInterval(intervaloPasos);
@@ -178,13 +108,13 @@ function renderizarPasosAnimados(pasos) {
     }
     pasosDiv.innerHTML = '';
 
-    if (!pasos || !pasos.length) {
+    if (!pasos || pasos.length === 0) {
         pasosDiv.textContent = 'Sin pasos disponibles.';
         return;
     }
 
     const fragment = document.createDocumentFragment();
-    pasos.forEach((texto) => {
+    pasos.forEach(texto => {
         const linea = document.createElement('div');
         linea.className = 'paso-item';
         linea.textContent = texto;
@@ -203,7 +133,7 @@ function renderizarPasosAnimados(pasos) {
             const item = items[idx];
             item.classList.add('mostrar', 'destacado');
             pasosDiv.scrollTop = pasosDiv.scrollHeight;
-            idx += 1;
+            idx++;
         } else {
             clearInterval(intervaloPasos);
             intervaloPasos = null;
@@ -211,7 +141,47 @@ function renderizarPasosAnimados(pasos) {
     }, 450);
 }
 
-// 1. Ordenamiento por Selección
+// Ordena la lista según el algoritmo y orden seleccionados
+function ordenarLista(orden) {
+    const entrada = listaEntrada.value.trim();
+    let elementos = entrada.split(',').map(item => item.trim()).filter(item => item.length > 0);
+    let resultadoFinal = [];
+    let pasos = [];
+
+    if (elementos.length === 0) {
+        resultadoDiv.textContent = 'Error: Por favor, ingresa elementos.';
+        return;
+    }
+
+    let arr = [];
+    if (tipoDatoActual === 'numerico') {
+        const numeros = elementos.map(Number);
+        if (numeros.some(n => isNaN(n))) {
+            resultadoDiv.textContent = 'Error: ¡Asegúrate de ingresar solo números válidos!';
+            return;
+        }
+        arr = numeros;
+    } else if (tipoDatoActual === 'alfabetico') {
+        arr = elementos;
+    }
+
+    switch (algoritmoActual) {
+        case 'seleccion':
+            ({ resultado: resultadoFinal, pasos } = ordenamientoSeleccion(arr, orden));
+            break;
+        case 'burbuja':
+            ({ resultado: resultadoFinal, pasos } = ordenamientoBurbuja(arr, orden));
+            break;
+        case 'insercion':
+            ({ resultado: resultadoFinal, pasos } = ordenamientoInsercion(arr, orden));
+            break;
+    }
+
+    resultadoDiv.textContent = resultadoFinal.join(', ');
+    renderizarPasosAnimados(pasos);
+}
+
+// Algoritmo de ordenamiento por selección
 function ordenamientoSeleccion(arr, orden) {
     const n = arr.length;
     const nuevoArr = [...arr];
@@ -220,7 +190,6 @@ function ordenamientoSeleccion(arr, orden) {
 
     for (let i = 0; i < n - 1; i++) {
         let indiceExtremo = i;
-        
         for (let j = i + 1; j < n; j++) {
             if (comparar(nuevoArr[indiceExtremo], nuevoArr[j], orden)) {
                 indiceExtremo = j;
@@ -228,7 +197,6 @@ function ordenamientoSeleccion(arr, orden) {
         }
 
         if (indiceExtremo !== i) {
-            // Intercambio
             [nuevoArr[i], nuevoArr[indiceExtremo]] = [nuevoArr[indiceExtremo], nuevoArr[i]];
             pasos.push(`Intercambio en posición ${i} y ${indiceExtremo}: [${nuevoArr.join(', ')}]`);
         }
@@ -237,7 +205,7 @@ function ordenamientoSeleccion(arr, orden) {
     return { resultado: nuevoArr, pasos };
 }
 
-// 2. Ordenamiento de Burbuja
+// Algoritmo de ordenamiento burbuja
 function ordenamientoBurbuja(arr, orden) {
     const n = arr.length;
     const nuevoArr = [...arr];
@@ -247,22 +215,20 @@ function ordenamientoBurbuja(arr, orden) {
 
     for (let i = 0; i < n - 1; i++) {
         intercambiado = false;
-
         for (let j = 0; j < n - 1 - i; j++) {
             if (comparar(nuevoArr[j], nuevoArr[j + 1], orden)) {
-                // Intercambio
                 [nuevoArr[j], nuevoArr[j + 1]] = [nuevoArr[j + 1], nuevoArr[j]];
                 intercambiado = true;
                 pasos.push(`Intercambio en posiciones ${j} y ${j + 1}: [${nuevoArr.join(', ')}]`);
             }
         }
-        if (!intercambiado) break; 
+        if (!intercambiado) break;
     }
     pasos.push(`Resultado final: [${nuevoArr.join(', ')}]`);
     return { resultado: nuevoArr, pasos };
 }
 
-// 3. Ordenamiento por Inserción
+// Algoritmo de ordenamiento por inserción
 function ordenamientoInsercion(arr, orden) {
     const n = arr.length;
     const nuevoArr = [...arr];
@@ -272,17 +238,16 @@ function ordenamientoInsercion(arr, orden) {
     for (let i = 1; i < n; i++) {
         let actual = nuevoArr[i];
         let j = i - 1;
-        
-        // Desplaza los elementos
+
         while (j >= 0 && comparar(nuevoArr[j], actual, orden)) {
             nuevoArr[j + 1] = nuevoArr[j];
             j--;
         }
-        
+
         nuevoArr[j + 1] = actual;
         pasos.push(`Inserta ${actual} en posición ${j + 1}: [${nuevoArr.join(', ')}]`);
     }
     pasos.push(`Resultado final: [${nuevoArr.join(', ')}]`);
     return { resultado: nuevoArr, pasos };
 }
-}
+
