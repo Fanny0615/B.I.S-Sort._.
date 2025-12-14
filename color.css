@@ -1,4 +1,4 @@
-
+/* Estilos globales */
 body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
@@ -24,13 +24,12 @@ header h1 {
     letter-spacing: 0.5px;
 }
 
-/* Estilos de Navegación */
+/* Navegación */
 nav {
     background-color: #3e4c79;
     padding: 0.5em 0;
 }
 
-    /* Navegación eliminada: se limpian estilos no usados */
 nav ul {
     list-style: none;
     padding: 0;
@@ -55,8 +54,8 @@ nav ul li a, .dropdown-toggle {
     cursor: pointer;
 }
 
-/* Menú Desplegable */
-.dropdown-content {/*cambiar*/
+/* Menú desplegable */
+.dropdown-content {
     display: none;
     position: absolute;
     background-color: #3e4c79;
@@ -81,7 +80,7 @@ nav ul li a, .dropdown-toggle {
     background-color: #90a4e7;
 }
 
-/* Estilos de Contenido Principal */
+/* Contenido principal */
 main {
     padding: 20px;
     width: min(900px, 96vw);
@@ -92,7 +91,7 @@ main {
     text-align: center;
 }
 
-/* Botones y Formulario */
+/* Botones y formulario */
 button {
     padding: 10px 15px;
     margin: 5px;
@@ -121,7 +120,7 @@ button:hover {
     padding: 15px 25px;
     font-size: 18px;
 }
-        
+
 .hidden {
     display: none !important;
 }
@@ -180,9 +179,7 @@ textarea {
     background-color: #e8f0ff;
 }
 
-
-/* Diseño Celular */
-
+/* Diseño para móviles */
 @media (max-width: 900px) {
     main {
         width: 94vw;
@@ -199,9 +196,7 @@ textarea {
     }
 }
 
-    /* Navegación eliminada en móvil */
 @media (max-width: 600px) {
-    
     body {
         font-size: 16px;
     }
@@ -216,7 +211,6 @@ textarea {
         box-shadow: none;
     }
 
-    /* Navegación y Menú */
     nav ul {
         justify-content: space-around;
     }
@@ -226,7 +220,6 @@ textarea {
         font-size: 0.9em;
     }
 
-    /* Apilar botones verticalmente en móvil */
     .section-buttons {
         flex-direction: column;
     }
@@ -247,4 +240,4 @@ textarea {
         font-size: 0.9em;
     }
 }
-}
+
