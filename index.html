@@ -11,16 +11,29 @@
     <header>
         <h1>B.I.S-Sort</h1>
     </header>
-    <main>
-        <section id="menu-principal">
-            <h2>Selecciona un Algoritmo</h2>
-            <div class="section-buttons">
-                <button onclick="seleccionarAlgoritmo('burbuja')">Burbuja</button>
-                <button onclick="seleccionarAlgoritmo('insercion')">Inserción</button>
-                <button onclick="seleccionarAlgoritmo('seleccion')">Selección</button>
-            </div>
-            <button onclick="mostrarSeccion('acerca-de')" style="margin-top: 20px;">Sobre Nosotras</button>
-        </section>
+
+        <nav>
+            <ul>
+                <li><a href="#" onclick="mostrarSeccion('menu-principal')">Inicio</a></li>
+                <li class="dropdown">
+                    <span class="dropdown-toggle">Menú</span>
+                    <div class="dropdown-content">
+                        <a href="#" id="enlace-acerca-de" onclick="mostrarSeccion('acerca-de')">Sobre Nosotras</a>
+                        <a href="#" id="enlace-regresar" class="hidden" onclick="mostrarSeccion('menu-principal')">Regresar a Principal</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="menu-principal">
+                <h2>Selecciona un Algoritmo</h2>
+                <div class="section-buttons">
+                    <button onclick="seleccionarAlgoritmo('burbuja')">Burbuja</button>
+                    <button onclick="seleccionarAlgoritmo('insercion')">Inserción</button>
+                    <button onclick="seleccionarAlgoritmo('seleccion')">Selección</button>
+                </div>
+            </section>
 
         <section id="seleccion-tipo-dato" class="hidden">
             <h2>Algoritmo de <span id="nombre-algoritmo"></span>: Elige el Tipo de Dato</h2>
