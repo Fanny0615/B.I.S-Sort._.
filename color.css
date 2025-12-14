@@ -1,12 +1,3 @@
-/* Estilos Base para Escritorio y Móvil */
-
-/* Fuente personalizada: Garden Bed */
-@font-face {
-    font-family: 'Garden Bed';
-    src: url('fonts/GardenBed-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -255,4 +246,5 @@ textarea {
     #resultado-ordenado {
         font-size: 0.9em;
     }
+}
 }
