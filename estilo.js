@@ -285,3 +285,4 @@ function ordenamientoInsercion(arr, orden) {
     pasos.push(`Resultado final: [${nuevoArr.join(', ')}]`);
     return { resultado: nuevoArr, pasos };
 }
+}
