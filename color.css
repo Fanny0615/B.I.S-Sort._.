@@ -1,0 +1,261 @@
+/* Estilos Base para Escritorio y Móvil */
+
+/* Fuente personalizada: Garden Bed */
+@font-face {
+    font-family: 'Garden Bed';
+    src: url('fonts/garden-bed.woff2') format('woff2'),
+         url('fonts/garden-bed.woff') format('woff'),
+         url('fonts/garden-bed.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #93a8ba;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #162660;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Montserrat', 'Inter', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* Estilos de Navegación */
+nav {
+    background-color: #3e4c79;
+    padding: 0.5em 0;
+}
+
+    /* Navegación eliminada: se limpian estilos no usados */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75em;
+    max-width: 1200px;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav ul li a, .dropdown-toggle {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+/* Menú Desplegable */
+.dropdown-content {/*cambiar*/
+    display: none;
+    position: absolute;
+    background-color: #3e4c79;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10;
+    top: 100%;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #90a4e7;
+}
+
+/* Estilos de Contenido Principal */
+main {
+    padding: 20px;
+    width: min(900px, 96vw);
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Botones y Formulario */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #90a4e7;
+}
+
+.section-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.section-buttons button {
+    margin: 10px;
+    padding: 15px 25px;
+    font-size: 18px;
+}
+        
+.hidden {
+    display: none !important;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#resultado-ordenado {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-weight: bold;
+}
+
+#pasos-ordenamiento {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #f5f7fb;
+    border: 1px solid #d5d9e0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    text-align: left;
+    max-height: 260px;
+    overflow-y: auto;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+}
+
+.paso-item {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 300ms ease, transform 300ms ease, background-color 600ms ease;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.paso-item.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.paso-item.destacado {
+    background-color: #e8f0ff;
+}
+
+
+/* Diseño Celular */
+
+@media (max-width: 900px) {
+    main {
+        width: 94vw;
+        padding: 15px;
+    }
+
+    nav ul {
+        padding: 0 1em;
+        gap: 0.5em;
+    }
+
+    nav ul li a, .dropdown-toggle {
+        padding: 0.6em 0.8em;
+    }
+}
+
+    /* Navegación eliminada en móvil */
+@media (max-width: 600px) {
+    
+    body {
+        font-size: 16px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    main {
+        margin: 10px;
+        padding: 10px;
+        box-shadow: none;
+    }
+
+    /* Navegación y Menú */
+    nav ul {
+        justify-content: space-around;
+    }
+
+    nav ul li a, .dropdown-toggle {
+        padding: 0.8em 0.5em;
+        font-size: 0.9em;
+    }
+
+    /* Apilar botones verticalmente en móvil */
+    .section-buttons {
+        flex-direction: column;
+    }
+
+    .section-buttons button {
+        width: 90%;
+        margin: 5px auto;
+        padding: 12px 20px;
+        font-size: 1.1em;
+    }
+
+    textarea {
+        min-height: 80px;
+        font-size: 1em;
+    }
+
+    #resultado-ordenado {
+        font-size: 0.9em;
+    }
+}

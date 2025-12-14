@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.I.S-Sort</title>
+    <link rel="stylesheet" href="color.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>B.I.S-Sort</h1>
+    </header>
+
+    
+
+    <main>
+        <section id="menu-principal">
+            <h2>Selecciona un Algoritmo</h2>
+            <div class="section-buttons">
+                <button onclick="seleccionarAlgoritmo('burbuja')">Burbuja</button>
+                <button onclick="seleccionarAlgoritmo('insercion')">Inserción</button>
+                <button onclick="seleccionarAlgoritmo('seleccion')">Selección</button>
+            </div>
+            <button onclick="mostrarSeccion('acerca-de')" style="margin-top: 20px;">Sobre Nosotras</button>
+        </section>
+
+        <section id="seleccion-tipo-dato" class="hidden">
+            <h2>Algoritmo de <span id="nombre-algoritmo"></span>: Elige el Tipo de Dato</h2>
+            <div class="section-buttons">
+                <button onclick="seleccionarTipoDato('numerico')">Numérico</button>
+                <button onclick="seleccionarTipoDato('alfabetico')">Alfabético</button>
+            </div>
+            <button onclick="mostrarSeccion('menu-principal')">Volver al Inicio</button>
+        </section>
+
+        <section id="interfaz-ordenamiento" class="hidden">
+            <h2>Ordenamiento <span id="nombre-tipo"></span> por <span id="nombre-alg-interfaz"></span></h2>
+            
+            <div class="input-group">
+                <label for="lista-entrada">Ingresa una lista (separa por comas):</label>
+                <textarea id="lista-entrada" 
+                          placeholder="Ejemplo Numérico: 5, 2, 8, 1, 9&#10;Ejemplo Alfabético: a, b, c, d, e"
+                          oninput="restringirEntrada(event)"
+                          onkeydown="manejarTecla(event)"></textarea>
+                <small id="retroalimentacion-entrada" style="color: red;"></small>
+            </div>
+
+            <div class="section-buttons">
+                <button onclick="ordenarLista('ascendente')">Ordenar Ascendente</button>
+                <button onclick="ordenarLista('descendente')">Ordenar Descendente</button>
+            </div>
+            
+            <h3>Lista Ordenada:</h3>
+            <div id="resultado-ordenado">Esperando entrada...</div>
+
+            <h3>Pasos del Algoritmo:</h3>
+            <pre id="pasos-ordenamiento">Esperando pasos...</pre>
+
+            <button onclick="mostrarSeccion('seleccion-tipo-dato')">Volver a Tipo de Dato</button>
+        </section>
+
+        <section id="acerca-de" class="hidden">
+            <h2>Sobre Nosotras ℹ️</h2>
+            <p>Somos Valeria Castro, Magaly Castro y Francisca Jurado, las creadoras de "B.I.S Sort", una herramienta diseñada para ayudarte a ordenar listas utilizando los algoritmos clásicos: Bubble Sort, Insertion Sort y Selection Sort.
+Nuestra plataforma está pensada para que puedas ingresar tus datos, seleccionar el método de ordenamiento que prefieras y obtener resultados claros y precisos en segundos. No es complicado, no es confuso: solo ingresas, ordenas y listo.</p>
+            <button onclick="mostrarSeccion('menu-principal')">Regresar a Principal</button>
+        </section>
+
+    </main>
+
+    <script src="estilo.js"></script>
+</body>
+</html>
